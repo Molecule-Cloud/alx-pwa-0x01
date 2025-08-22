@@ -1,572 +1,300 @@
-# ALX Movie App
+# ProWeb Pulse: Mastering PWA Fundamentals
 
-This project documentation provides a comprehensive guide to using the MoviesDatabase API from RapidAPI, which offers extensive movie, TV show, and actor information.
+A comprehensive implementation of Progressive Web App (PWA) features for the Cine Seek movie application using Next.js and modern PWA technologies.
 
-## API Overview
+## Overview
 
-The MoviesDatabase API is a comprehensive entertainment database that provides detailed information about movies, TV shows, episodes, and actors. This api provides complete and updated data for over 9 million titles (movies, series and episodes) and 11 million actors / crew and cast members. The API includes rich metadata such as YouTube trailer URLs, awards information, full biographies, plot summaries, ratings, and cast details. It's designed for developers building entertainment applications, movie recommendation systems, or any project requiring extensive film and television data.
+This project transforms a standard movie browsing application into a fully-featured Progressive Web App with offline capabilities, installability, and enhanced performance. The implementation demonstrates how to leverage PWA technologies to create native app-like experiences on the web.
 
-Key features include:
-- Extensive database with 9+ million titles and 11+ million cast/crew members
-- Real-time updated information
-- YouTube trailer integration
-- Awards and nominations data
-- Detailed biographical information for actors and crew
-- Episode-level data for TV series
-- Search capabilities across multiple categories
+## Learning Objectives
 
-## Version
+- Understand PWA fundamentals and their benefits for web applications
+- Implement service workers in Next.js applications for offline functionality
+- Configure web app manifests for mobile device installability
+- Set up proper PWA caching strategies for optimal performance
+- Deploy and test PWA functionality in production environments
 
-**API Version**: v1
+## Key PWA Concepts
 
-The MoviesDatabase API is actively maintained with regular updates to ensure data accuracy and completeness.
+### Progressive Web Apps
+Web applications that provide native app-like experiences through modern web capabilities, combining the best of web and mobile app features.
 
-## Available Endpoints
+### Service Workers
+JavaScript workers that run in the background, enabling offline functionality, background sync, and push notifications by intercepting network requests.
 
-### Core Endpoints
+### Web App Manifest
+A JSON file that defines app metadata, icons, and display preferences, allowing browsers to install the app on users' devices.
 
-- **`/titles/search/title/{query}`**
-  - Search for movies and TV shows by title
-  - Supports partial matching and fuzzy search
+### Cache Strategies
+Sophisticated techniques for storing and serving assets, ensuring optimal performance both online and offline.
 
-- **`/titles/random`**
-  - Retrieve random movie or TV show suggestions
-  - Useful for discovery features
+### Install Prompt
+Browser-native mechanism that allows users to add PWAs to their home screens, providing easy access like native applications.
 
-- **`/titles/{id}`**
-  - Get detailed information about a specific title by ID
-  - Returns comprehensive metadata including cast, crew, ratings, and plot
+## Technology Stack
 
-- **`/titles/series/{id}`**
-  - Get detailed series information including seasons and episodes
-  - Returns episode lists and series-specific metadata
+- **Next.js**: React framework for server-rendered applications
+- **@ducanh2912/next-pwa**: Advanced PWA plugin for Next.js with enhanced features
+- **Webpack**: Module bundler for optimized JavaScript applications
+- **Vercel**: Deployment platform optimized for Next.js applications
+- **PWA Manifest Generator**: Tool for creating app icons and manifest configurations
 
-- **`/titles/{id}/ratings`**
-  - Get rating information for a specific title
-  - Includes ratings from various sources
+## Real-World Applications
 
-- **`/actors/search/name/{query}`**
-  - Search for actors, directors, and other crew members by name
-  - Returns biographical and career information
+The Cine Seek PWA demonstrates how media browsing applications benefit from PWA technology:
 
-- **`/actors/{id}`**
-  - Get detailed actor information including filmography
-  - Returns complete biographical data and career timeline
+1. **Offline Access**: Users can browse previously viewed movie details without internet connectivity
+2. **Improved Performance**: Cached assets load significantly faster on subsequent visits
+3. **Installability**: Users can add the app to their home screens like native applications
+4. **Cross-Platform Compatibility**: Works seamlessly across devices with a single codebase
+5. **Enhanced Discoverability**: Appears in app stores and search results when properly configured
 
-- **`/titles/utils/genres`**
-  - Get list of available movie and TV show genres
-  - Useful for category-based filtering
+This implementation pattern is widely adopted by major media companies including Netflix, Disney+, and Spotify Lite to provide app-like experiences without requiring app store downloads.
 
-### Advanced Endpoints
+## Project Structure
 
-- **`/titles/search/keyword/{keyword}`**
-  - Search titles by keywords in plot descriptions
-  - Advanced content discovery
-
-- **`/titles/search/year/{year}`**
-  - Filter titles by release year
-  - Supports range queries
-
-- **`/titles/{id}/episodes`**
-  - Get episode information for TV series
-  - Returns season and episode details
-
-## Request and Response Format
-
-### Authentication Headers
-All requests must include the following headers:
-```javascript
-{
-  'x-rapidapi-key': 'YOUR_API_KEY',
-  'x-rapidapi-host': 'moviesdatabase.p.rapidapi.com'
-}
+```
+alx-movie-app/
+├── pages/
+│   ├── _document.tsx
+│   └── _app.tsx
+├── public/
+│   ├── manifest.json
+│   └── icons/
+│       ├── android-chrome-192x192.png
+│       ├── apple-icon-152x152.png
+│       └── ms-icon-310x310.png
+├── components/
+├── styles/
+├── next.config.mjs
+├── package.json
+└── README.md
 ```
 
-### Example Request (Node.js/Next.js)
+## Installation and Setup
 
-#### Using Built-in HTTPS Module
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn package manager
+- Git for version control
+
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/YOUR_USER_NAME/alx-project-0x14.git alx-pwa-0x01
+cd alx-movie-app
+```
+
+### Step 2: Install Dependencies
+```bash
+# Install PWA dependencies
+npm i @ducanh2912/next-pwa
+npm i -D webpack
+
+# Install all project dependencies
+npm install
+```
+
+### Step 3: Verify Installation
+Check your `package.json` file for the following dependencies:
+- `"webpack": "^5.94.0"`
+- `"@ducanh2912/next-pwa": "^10.2.9"`
+
+## Configuration
+
+### PWA Configuration (next.config.mjs)
 ```javascript
-const https = require('https');
+import withPWAInit from "@ducanh2912/next-pwa";
 
-const options = {
-  method: 'GET',
-  hostname: 'moviesdatabase.p.rapidapi.com',
-  port: null,
-  path: '/titles/search/title/inception',
-  headers: {
-    'x-rapidapi-key': process.env.RAPIDAPI_KEY,
-    'x-rapidapi-host': 'moviesdatabase.p.rapidapi.com'
-  }
+const withPWA = withPWAInit({
+  dest: 'public'
+});
+
+const nextConfig = {
+  reactStrictMode: true,
+  images: {
+    domains: ['m.media-amazon.com'],
+  },
 };
 
-const req = https.request(options, function (res) {
-  const chunks = [];
-
-  res.on('data', function (chunk) {
-    chunks.push(chunk);
-  });
-
-  res.on('end', function () {
-    const body = Buffer.concat(chunks);
-    const data = JSON.parse(body.toString());
-    console.log(data);
-  });
+export default withPWA({
+  ...nextConfig
 });
-
-req.on('error', function (error) {
-  console.error('Request error:', error);
-});
-
-req.end();
 ```
 
-#### Using Fetch API (Modern Approach)
-```javascript
-// Client-side or Next.js API route
-async function fetchMovieData(titleId) {
-  try {
-    const response = await fetch(`https://moviesdatabase.p.rapidapi.com/titles/${titleId}`, {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-key': process.env.RAPIDAPI_KEY,
-        'x-rapidapi-host': 'moviesdatabase.p.rapidapi.com'
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Fetch error:', error);
-    throw error;
-  }
-}
-```
-
-#### Next.js API Route Example
-```javascript
-// pages/api/movies/[id].js
-export default async function handler(req, res) {
-  const { id } = req.query;
-
-  const options = {
-    method: 'GET',
-    headers: {
-      'x-rapidapi-key': process.env.RAPIDAPI_KEY,
-      'x-rapidapi-host': 'moviesdatabase.p.rapidapi.com'
-    }
-  };
-
-  try {
-    const response = await fetch(`https://moviesdatabase.p.rapidapi.com/titles/${id}`, options);
-    
-    if (!response.ok) {
-      return res.status(response.status).json({ error: 'Failed to fetch movie data' });
-    }
-
-    const data = await response.json();
-    res.status(200).json(data);
-  } catch (error) {
-    console.error('API Error:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-}
-```
-
-### Example Response Format
-
-**Title Search Response:**
+### Web App Manifest (public/manifest.json)
 ```json
 {
-  "page": 1,
-  "next": "/titles/search/title/inception?page=2",
-  "entries": 50,
-  "results": [
+  "name": "Cine Seek",
+  "short_name": "CineSeek",
+  "icons": [
     {
-      "id": "tt1375666",
-      "primaryImage": {
-        "url": "https://m.media-amazon.com/images/...",
-        "width": 1080,
-        "height": 1350
-      },
-      "titleType": {
-        "text": "Movie",
-        "id": "movie"
-      },
-      "titleText": {
-        "text": "Inception"
-      },
-      "originalTitleText": {
-        "text": "Inception"
-      },
-      "releaseYear": {
-        "year": 2010
-      },
-      "releaseDate": {
-        "day": 16,
-        "month": 7,
-        "year": 2010
-      }
+      "src": "/icons/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/apple-icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/ms-icon-310x310.png",
+      "sizes": "310x310",
+      "type": "image/png"
     }
-  ]
+  ],
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
 }
 ```
 
-**Detailed Title Response:**
-```json
-{
-  "results": {
-    "id": "tt1375666",
-    "titleText": {
-      "text": "Inception"
-    },
-    "titleType": {
-      "id": "movie",
-      "text": "Movie"
-    },
-    "originalTitleText": {
-      "text": "Inception"
-    },
-    "plot": {
-      "plotText": {
-        "plainText": "A thief who steals corporate secrets..."
-      }
-    },
-    "releaseYear": {
-      "year": 2010
-    },
-    "runtimeMinutes": {
-      "time": 148
-    },
-    "genres": {
-      "genres": [
-        {
-          "text": "Action",
-          "id": "Action"
-        },
-        {
-          "text": "Sci-Fi",
-          "id": "Sci-Fi"
-        }
-      ]
-    },
-    "primaryImage": {
-      "url": "https://m.media-amazon.com/images/...",
-      "width": 1080,
-      "height": 1350
-    }
-  }
+### Document Configuration (pages/_document.tsx)
+```tsx
+import { Html, Head, Main, NextScript } from "next/document";
+
+export default function Document() {
+  return (
+    <Html lang="en">
+      <Head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#0070f3" />
+      </Head>
+      <body className="antialiased">
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  );
 }
 ```
 
-## Authentication
+## Icon Generation
 
-The MoviesDatabase API uses RapidAPI's standard authentication mechanism:
+### Required Icons
+Generate the following icons with specified dimensions:
+- `android-chrome-192x192.png` (192x192px)
+- `apple-icon-152x152.png` (152x152px)
+- `ms-icon-310x310.png` (310x310px)
 
-### Required Headers
-- **`X-RapidAPI-Key`**: Your unique API key from RapidAPI
-- **`X-RapidAPI-Host`**: `moviesdatabase.p.rapidapi.com`
+### Icon Generation Process
+1. Prepare a high-quality PNG logo
+2. Use a PWA icon generator tool
+3. Generate icons in the required sizes
+4. Place icons in the `public/icons/` directory
+5. Ensure file names match manifest specifications
 
-### Getting Your API Key
-1. Sign up for a free account at [RapidAPI](https://rapidapi.com)
-2. Navigate to the MoviesDatabase API page
-3. Subscribe to the API (free tier available)
-4. Copy your API key from the dashboard
-5. Store the key securely in environment variables
+## Development
 
-### Environment Setup
-```javascript
-// .env.local file (Next.js)
-RAPIDAPI_KEY=your_api_key_here
-
-// Or .env file (Node.js)
-RAPIDAPI_KEY=your_api_key_here
+### Running Locally
+```bash
+npm run dev
 ```
 
-### TypeScript Interface for Headers
-```typescript
-interface ApiHeaders {
-  'x-rapidapi-key': string;
-  'x-rapidapi-host': string;
-}
+### Testing PWA Features
+1. Open Chrome DevTools
+2. Navigate to the "Application" tab
+3. Verify service worker registration
+4. Check manifest file loading
+5. Test offline functionality
+6. Validate caching strategies
+
+## Deployment
+
+### Deploy to Vercel
+```bash
+# Install Vercel CLI globally
+npm install -g vercel
+
+# Deploy the application
+vercel
 ```
 
-## Error Handling
+### Post-Deployment Testing
+1. Visit the deployed URL on a mobile device
+2. Test PWA installability
+3. Verify offline functionality
+4. Check performance metrics
+5. Validate service worker registration
 
-The API returns standard HTTP status codes along with descriptive error messages.
+## PWA Features
 
-### Common HTTP Status Codes
+### Offline Capability
+- Service workers cache essential resources
+- Previously viewed content available offline
+- Graceful degradation for unavailable features
 
-- **`200 OK`**: Request successful
-- **`400 Bad Request`**: Invalid request parameters
-- **`401 Unauthorized`**: Invalid or missing API key
-- **`403 Forbidden`**: API key lacks required permissions
-- **`404 Not Found`**: Resource not found
-- **`429 Too Many Requests`**: Rate limit exceeded
-- **`500 Internal Server Error`**: Server-side error
+### Installability
+- Add to home screen functionality
+- Standalone app experience
+- Native app-like launching
 
-### Error Response Format
-```json
-{
-  "message": "Invalid API key",
-  "error": "Unauthorized",
-  "statusCode": 401
-}
-```
+### Performance Optimization
+- Aggressive caching strategies
+- Fast loading times
+- Optimized resource delivery
 
-### TypeScript Error Interfaces
-```typescript
-interface ApiError {
-  message: string;
-  error: string;
-  statusCode: number;
-}
+### Cross-Platform Support
+- Consistent experience across devices
+- Responsive design principles
+- Platform-specific optimizations
 
-interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: ApiError;
-}
-```
+## Best Practices
 
-### Error Handling Best Practices
-```javascript
-// Using async/await with proper error handling
-async function fetchMovieWithErrorHandling(titleId) {
-  try {
-    const response = await fetch(`https://moviesdatabase.p.rapidapi.com/titles/${titleId}`, {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-key': process.env.RAPIDAPI_KEY,
-        'x-rapidapi-host': 'moviesdatabase.p.rapidapi.com'
-      }
-    });
+### Performance
+- Implement efficient caching strategies
+- Minimize bundle sizes
+- Optimize images and assets
+- Use lazy loading for non-critical resources
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`API Error ${response.status}: ${errorData.message || 'Unknown error'}`);
-    }
+### User Experience
+- Provide clear offline indicators
+- Implement smooth transitions
+- Ensure responsive design
+- Add loading states for better perceived performance
 
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('MoviesDatabase API Error:', error);
-    // Handle error appropriately for your application
-    throw error;
-  }
-}
+### Security
+- Serve over HTTPS in production
+- Implement proper CORS policies
+- Validate manifest configurations
+- Regular security updates
 
-// Using with Node.js HTTPS module
-const https = require('https');
+## Troubleshooting
 
-function fetchWithErrorHandling(path) {
-  return new Promise((resolve, reject) => {
-    const options = {
-      method: 'GET',
-      hostname: 'moviesdatabase.p.rapidapi.com',
-      port: null,
-      path: path,
-      headers: {
-        'x-rapidapi-key': process.env.RAPIDAPI_KEY,
-        'x-rapidapi-host': 'moviesdatabase.p.rapidapi.com'
-      }
-    };
+### Common Issues
+- **Service worker not registering**: Check HTTPS requirement and file paths
+- **Manifest not loading**: Verify file structure and link tags
+- **Icons not displaying**: Check file formats and sizes
+- **Install prompt not showing**: Ensure all PWA criteria are met
 
-    const req = https.request(options, function (res) {
-      const chunks = [];
+### Development Tips
+- Use Chrome DevTools for debugging
+- Test on multiple devices and browsers
+- Monitor network requests
+- Validate manifest with online tools
 
-      res.on('data', function (chunk) {
-        chunks.push(chunk);
-      });
+## Contributing
 
-      res.on('end', function () {
-        const body = Buffer.concat(chunks);
-        
-        if (res.statusCode >= 400) {
-          const error = JSON.parse(body.toString());
-          reject(new Error(`API Error ${res.statusCode}: ${error.message}`));
-          return;
-        }
+1. Fork the repository
+2. Create a feature branch
+3. Implement your changes
+4. Add appropriate tests
+5. Submit a pull request
 
-        try {
-          const data = JSON.parse(body.toString());
-          resolve(data);
-        } catch (parseError) {
-          reject(new Error('Failed to parse response'));
-        }
-      });
-    });
+## Resources
 
-    req.on('error', function (error) {
-      reject(error);
-    });
+- [Next.js PWA Documentation](https://github.com/ducanh2912/next-pwa)
+- [PWA Manifest Generator](https://www.simicart.com/manifest-generator.html)
+- [Web App Manifest Specification](https://w3c.github.io/manifest/)
+- [Service Workers API](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
 
-    req.end();
-  });
-}
-```
+## License
 
+This project is part of the ALX Software Engineering curriculum.
 
-### Best Practices
+## Support
 
-#### 1. Implement Caching
-Cache frequently requested data to reduce API calls:
-```javascript
-// Simple in-memory cache
-const cache = new Map();
-
-async function fetchWithCache(url) {
-  const cacheKey = url;
-  
-  if (cache.has(cacheKey)) {
-    console.log('Cache hit');
-    return cache.get(cacheKey);
-  }
-  
-  console.log('Cache miss - fetching from API');
-  const data = await fetch(url, {
-    headers: {
-      'x-rapidapi-key': process.env.RAPIDAPI_KEY,
-      'x-rapidapi-host': 'moviesdatabase.p.rapidapi.com'
-    }
-  }).then(res => res.json());
-  
-  // Cache for 1 hour
-  cache.set(cacheKey, data);
-  setTimeout(() => cache.delete(cacheKey), 3600000);
-  
-  return data;
-}
-```
-
-#### 2. Use Debouncing for Search
-Implement debouncing to avoid excessive API calls during user input:
-```javascript
-// Debounce function
-function debounce(func, delay) {
-  let timeoutId;
-  return function(...args) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => func.apply(this, args), delay);
-  };
-}
-
-// Usage in search functionality
-const debouncedSearch = debounce(async (searchTerm) => {
-  if (searchTerm.length < 3) return;
-  
-  try {
-    const response = await fetch(`https://moviesdatabase.p.rapidapi.com/titles/search/title/${encodeURIComponent(searchTerm)}`, {
-      headers: {
-        'x-rapidapi-key': process.env.RAPIDAPI_KEY,
-        'x-rapidapi-host': 'moviesdatabase.p.rapidapi.com'
-      }
-    });
-    
-    const data = await response.json();
-    // Handle search results
-    console.log(data);
-  } catch (error) {
-    console.error('Search error:', error);
-  }
-}, 300); // 300ms delay
-```
-
-#### 3. Handle Pagination Efficiently
-The API supports pagination for large result sets:
-```javascript
-async function fetchAllResults(baseUrl) {
-  const results = [];
-  let page = 1;
-  let hasNext = true;
-
-  while (hasNext) {
-    try {
-      const response = await fetch(`${baseUrl}?page=${page}`, {
-        headers: {
-          'x-rapidapi-key': process.env.RAPIDAPI_KEY,
-          'x-rapidapi-host': 'moviesdatabase.p.rapidapi.com'
-        }
-      });
-      
-      const data = await response.json();
-      results.push(...data.results);
-      hasNext = !!data.next;
-      page++;
-      
-      // Add delay to respect rate limits
-      if (hasNext) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
-    } catch (error) {
-      console.error(`Error fetching page ${page}:`, error);
-      break;
-    }
-  }
-
-  return results;
-}
-```
-
-#### 4. Error Recovery Strategies
-Implement retry logic with exponential backoff:
-```javascript
-async function fetchWithRetry(url, maxRetries = 3) {
-  for (let attempt = 0; attempt < maxRetries; attempt++) {
-    try {
-      const response = await fetch(url, {
-        headers: {
-          'x-rapidapi-key': process.env.RAPIDAPI_KEY,
-          'x-rapidapi-host': 'moviesdatabase.p.rapidapi.com'
-        }
-      });
-      
-      if (response.ok) {
-        return await response.json();
-      }
-      
-      if (response.status === 429) {
-        // Rate limit exceeded, wait before retry
-        const waitTime = Math.pow(2, attempt) * 1000; // Exponential backoff
-        console.log(`Rate limited. Waiting ${waitTime}ms before retry ${attempt + 1}/${maxRetries}`);
-        await new Promise(resolve => setTimeout(resolve, waitTime));
-        continue;
-      }
-      
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    } catch (error) {
-      console.error(`Attempt ${attempt + 1} failed:`, error.message);
-      
-      if (attempt === maxRetries - 1) {
-        throw new Error(`Failed after ${maxRetries} attempts: ${error.message}`);
-      }
-      
-      // Wait before next attempt
-      await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
-    }
-  }
-}
-```
-
-#### 5. Optimize Request Batching
-Group related requests when possible and avoid unnecessary calls by checking if data already exists locally.
-
-### Monitoring Usage
-Regularly monitor your API usage through the RapidAPI dashboard to:
-- Track remaining quota
-- Identify usage patterns
-- Plan for potential upgrades
-- Monitor response times and success rates
-
-### Data Usage Considerations
-- Store frequently accessed data in your database
-- Implement intelligent caching strategies
-- Consider using webhooks if available for real-time updates
-- Validate and sanitize all API responses before use
-
----
-
-**Note**: Always refer to the official RapidAPI documentation for the most up-to-date information about endpoints, rate limits, and pricing tiers.
+For questions or issues related to this PWA implementation, please refer to the official Next.js and PWA documentation or create an issue in the project repository.
