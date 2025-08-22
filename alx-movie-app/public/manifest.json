@@ -1,28 +1,135 @@
 {
-    "name": "Cine Seek",
+    "name": "CineSeek - Your Ultimate Movie Discovery Platform",
     "short_name": "CineSeek",
+    "description": "Discover, explore, and enjoy movies from every genre. Your ultimate destination for cinema entertainment.",
     "icons": [
         {
             "src": "/icons/android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png",
-            "purpose": "any-maskable"
+            "purpose": "any maskable"
         },
         {
             "src": "/icons/apple-icon-152x152.png",
             "sizes": "152x152",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/icons/ms-icon-310x310.png",
+            "sizes": "310x310",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/icons/favicon-16x16.png",
+            "sizes": "16x16",
             "type": "image/png"
         },
         {
-            "src": "/icons/ms-icon-310x310.png.png",
-            "sizes": "310x310",
+            "src": "/icons/favicon-32x32.png",
+            "sizes": "32x32",
             "type": "image/png"
+        },
+        {
+            "src": "/icons/apple-icon-180x180.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
         }
     ],
-    "theme_color": "#FFFFFF",
-    "background_color": "#FFFFFF",
+    "theme_color": "#E2D609",
+    "background_color": "#110F17",
     "start_url": "/",
+    "scope": "/",
     "display": "standalone",
-    "orientation": "portrait"
-
+    "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+    "orientation": "portrait-primary",
+    "categories": ["entertainment", "movies", "streaming"],
+    "lang": "en-US",
+    "dir": "ltr",
+    "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+    "prefer_related_applications": false,
+    "edge_side_panel": {
+        "preferred_width": 400
+    },
+    "launch_handler": {
+        "client_mode": "navigate-existing"
+    },
+    "protocol_handlers": [
+        {
+            "protocol": "web+movie",
+            "url": "/movies?id=%s"
+        }
+    ],
+    "file_handlers": [
+        {
+            "action": "/open-file",
+            "accept": {
+                "video/*": [".mp4", ".mov", ".avi", ".mkv"]
+            }
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Browse Movies",
+            "short_name": "Movies",
+            "description": "Browse our extensive movie collection",
+            "url": "/movies",
+            "icons": [
+                {
+                    "src": "/icons/android-chrome-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "Favorites",
+            "short_name": "Favorites",
+            "description": "View your favorite movies",
+            "url": "/movies?filter=favorites",
+            "icons": [
+                {
+                    "src": "/icons/android-chrome-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "Contact",
+            "short_name": "Contact",
+            "description": "Get in touch with us",
+            "url": "/contact",
+            "icons": [
+                {
+                    "src": "/icons/android-chrome-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ]
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/screenshots/desktop-home.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "CineSeek Home Page on Desktop"
+        },
+        {
+            "src": "/screenshots/mobile-movies.png",
+            "sizes": "390x844",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Movies Collection on Mobile"
+        }
+    ]
 }

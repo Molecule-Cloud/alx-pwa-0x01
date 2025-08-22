@@ -15,6 +15,11 @@ export interface MovieProps{
     posterImage: string;
     releaseYear: string;
     title: string;
+    onDownload?: (movie: MovieProps) => void;
+    onFavorite?: (movie: MovieProps) => void;
+    isFavorite?: boolean;
+    isDownloading?: boolean;
+    downloadProgress?: number;
 }
 
 interface PrimaryImage {
